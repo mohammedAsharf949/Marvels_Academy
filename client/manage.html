@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Panel - Marvels Maths Academy</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <img
+              src="./site/White_Black_Monogram_M_Business_Logo___1000_x_500_px_-removebg-preview.png"
+              alt="Logo"
+              class="mz-logo"
+            />
+          </div>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#about" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#services" class="nav-link">Services</a>
+            </li>
+            <li class="nav-item">
+              <a href="grades.html" class="nav-link">Grades</a>
+            </li>
+            <li class="nav-item">
+              <a href="live.html" class="nav-link">Live Sessions</a>
+            </li>
+            <li class="nav-item">
+              <a href="recorded.html" class="nav-link" data-nav="recorded"
+                >Recorded Sessions</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="manage.html" class="nav-link active" data-nav="manage"
+                >Manage Panel</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="worksheets.html" class="nav-link">Worksheets</a>
+            </li>
+            <li class="nav-item">
+              <a href="games.html" class="nav-link">Games</a>
+            </li>
+            <li class="nav-item">
+              <a href="plans.html" class="nav-link btn-primary">Plans</a>
+            </li>
+            <li class="nav-item">
+              <a href="steps.html" class="nav-link">How Our Sessions Work</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#contact" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a href="login.html" class="nav-link" data-nav="auth">Login</a>
+            </li>
+          </ul>
+          <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="live-sessions">
+      <div class="container">
+        <div class="section-header">
+          <h2>Administrator Manage Panel</h2>
+          <p>Manage users, roles, grades, live rooms, and recorded sessions.</p>
+        </div>
+
+        <div class="manage-layout">
+          <aside class="manage-sidebar">
+            <button class="manage-tab-btn active" data-tab="users">
+              Users
+            </button>
+            <button class="manage-tab-btn" data-tab="roles">Roles</button>
+            <button class="manage-tab-btn" data-tab="grades">Grades</button>
+            <button class="manage-tab-btn" data-tab="liveRooms">
+              Live Rooms
+            </button>
+            <button class="manage-tab-btn" data-tab="recordedSessions">
+              Recorded Sessions
+            </button>
+          </aside>
+
+          <main class="manage-main">
+            <div class="manage-section active" data-section="users">
+              <h3>Users</h3>
+              <div class="auth-error" id="usersError"></div>
+
+              <form id="createUserForm" class="manage-form-grid">
+                <input
+                  class="auth-input"
+                  id="newUserName"
+                  type="text"
+                  placeholder="Name"
+                  required
+                />
+                <input
+                  class="auth-input"
+                  id="newUserEmail"
+                  type="email"
+                  placeholder="Email"
+                  required
+                />
+                <input
+                  class="auth-input"
+                  id="newUserPassword"
+                  type="password"
+                  placeholder="Password"
+                  required
+                />
+                <select class="auth-input" id="newUserRole" required></select>
+                <select class="auth-input" id="newUserGrade"></select>
+                <button class="btn-primary" type="submit">Create User</button>
+              </form>
+
+              <table class="manage-table" id="usersTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Grade</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+
+            <div class="manage-section" data-section="roles">
+              <h3>Roles</h3>
+              <div class="live-room-subtitle">
+                Default roles are created in the database schema.
+              </div>
+              <table class="manage-table" id="rolesTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+
+            <div class="manage-section" data-section="grades">
+              <h3>Grades</h3>
+              <table class="manage-table" id="gradesTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+
+            <div class="manage-section" data-section="liveRooms">
+              <h3>Live Rooms</h3>
+              <div class="auth-error" id="roomsError"></div>
+
+              <form id="createRoomForm" class="manage-form-grid">
+                <input
+                  class="auth-input"
+                  id="newRoomTitle"
+                  type="text"
+                  placeholder="Room title"
+                  required
+                />
+                <select
+                  class="auth-input"
+                  id="newRoomGrade"
+                  title="Select grade for the live room"
+                  required
+                ></select>
+                <input
+                  class="auth-input"
+                  id="newRoomLink"
+                  type="url"
+                  placeholder="Meeting link (optional)"
+                />
+                <button class="btn-primary" type="submit">Create Room</button>
+              </form>
+
+              <table class="manage-table" id="roomsTable">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Grade</th>
+                    <th>Created</th>
+                    <th>Created By</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+
+            <div class="manage-section" data-section="recordedSessions">
+              <h3>Recorded Sessions</h3>
+              <div class="auth-error" id="sessionsError"></div>
+
+              <div class="manage-form-grid">
+                <select
+                  class="auth-input"
+                  id="recordedGradeFilter"
+                  title="Filter recorded sessions by grade"
+                ></select>
+              </div>
+
+              <form id="createSessionForm" class="manage-form-grid">
+                <input
+                  class="auth-input"
+                  id="newSessionTitle"
+                  type="text"
+                  placeholder="Lesson name"
+                  required
+                />
+                <input
+                  class="auth-input"
+                  id="newSessionUnit"
+                  type="number"
+                  min="1"
+                  step="1"
+                  placeholder="Unit #"
+                  required
+                />
+                <input
+                  class="auth-input"
+                  id="newSessionLesson"
+                  type="number"
+                  min="1"
+                  step="1"
+                  placeholder="Lesson #"
+                  required
+                />
+                <input
+                  class="auth-input"
+                  id="newSessionUrl"
+                  type="url"
+                  placeholder="Video URL"
+                  required
+                />
+                <select
+                  class="auth-input"
+                  id="newSessionGrade"
+                  required
+                ></select>
+                <button class="btn-primary" type="submit">
+                  Upload Session
+                </button>
+              </form>
+
+              <table class="manage-table" id="sessionsTable">
+                <thead>
+                  <tr>
+                    <th>Unit</th>
+                    <th>Lesson</th>
+                    <th>Name</th>
+                    <th>Grade</th>
+                    <th>Uploaded</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </main>
+        </div>
+      </div>
+    </section>
+
+    <script type="module" src="script.js"></script>
+    <script>
+      (() => {
+        const els = {
+          usersError: document.getElementById("usersError"),
+          roomsError: document.getElementById("roomsError"),
+          sessionsError: document.getElementById("sessionsError"),
+          createUserForm: document.getElementById("createUserForm"),
+          newUserName: document.getElementById("newUserName"),
+          newUserEmail: document.getElementById("newUserEmail"),
+          newUserPassword: document.getElementById("newUserPassword"),
+          newUserRole: document.getElementById("newUserRole"),
+          newUserGrade: document.getElementById("newUserGrade"),
+          usersTableBody: document.querySelector("#usersTable tbody"),
+          rolesTableBody: document.querySelector("#rolesTable tbody"),
+          gradesTableBody: document.querySelector("#gradesTable tbody"),
+          createRoomForm: document.getElementById("createRoomForm"),
+          newRoomTitle: document.getElementById("newRoomTitle"),
+          newRoomGrade: document.getElementById("newRoomGrade"),
+          newRoomLink: document.getElementById("newRoomLink"),
+          roomsTableBody: document.querySelector("#roomsTable tbody"),
+          recordedGradeFilter: document.getElementById("recordedGradeFilter"),
+          createSessionForm: document.getElementById("createSessionForm"),
+          newSessionTitle: document.getElementById("newSessionTitle"),
+          newSessionUnit: document.getElementById("newSessionUnit"),
+          newSessionLesson: document.getElementById("newSessionLesson"),
+          newSessionUrl: document.getElementById("newSessionUrl"),
+          newSessionGrade: document.getElementById("newSessionGrade"),
+          sessionsTableBody: document.querySelector("#sessionsTable tbody"),
+        };
+
+        const state = {
+          user: null,
+          roles: [],
+          grades: [],
+          users: [],
+          rooms: [],
+          sessions: [],
+        };
+
+        function showError(el, message) {
+          if (!el) return;
+          el.textContent = message;
+          el.style.display = message ? "block" : "none";
+        }
+
+        function clearErrors() {
+          showError(els.usersError, "");
+          showError(els.roomsError, "");
+          showError(els.sessionsError, "");
+        }
+
+        function mountSelect(select, options, placeholder) {
+          select.innerHTML = "";
+          if (placeholder !== null && placeholder !== undefined) {
+            const opt = document.createElement("option");
+            opt.value = "";
+            opt.textContent = placeholder;
+            select.appendChild(opt);
+          }
+          options.forEach((o) => {
+            const opt = document.createElement("option");
+            opt.value = String(o.value);
+            opt.textContent = o.label;
+            select.appendChild(opt);
+          });
+        }
+
+        function renderRoles() {
+          els.rolesTableBody.innerHTML = "";
+          state.roles.forEach((r) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `<td></td><td></td>`;
+            tr.children[0].textContent = r.id;
+            tr.children[1].textContent = r.name;
+            els.rolesTableBody.appendChild(tr);
+          });
+        }
+
+        function renderGrades() {
+          els.gradesTableBody.innerHTML = "";
+          state.grades.forEach((g) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `<td></td><td></td>`;
+            tr.children[0].textContent = g.id;
+            tr.children[1].textContent = g.name;
+            els.gradesTableBody.appendChild(tr);
+          });
+        }
+
+        function renderUsers() {
+          els.usersTableBody.innerHTML = "";
+          state.users.forEach((u) => {
+            const tr = document.createElement("tr");
+
+            const roleSelect = document.createElement("select");
+            roleSelect.className = "auth-input";
+            mountSelect(
+              roleSelect,
+              state.roles.map((r) => ({ value: r.name, label: r.name })),
+              null,
+            );
+            roleSelect.value = u.roleName;
+
+            const gradeSelect = document.createElement("select");
+            gradeSelect.className = "auth-input";
+            mountSelect(
+              gradeSelect,
+              state.grades.map((g) => ({ value: g.id, label: g.name })),
+              "No grade",
+            );
+            gradeSelect.value = u.gradeId ? String(u.gradeId) : "";
+
+            const updateBtn = document.createElement("button");
+            updateBtn.className = "btn-primary";
+            updateBtn.type = "button";
+            updateBtn.textContent = "Save";
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "btn-outline";
+            deleteBtn.type = "button";
+            deleteBtn.textContent = "Delete";
+
+            updateBtn.addEventListener("click", async () => {
+              clearErrors();
+              const roleName = roleSelect.value;
+              const gradeId = gradeSelect.value || null;
+              const res = await window.MarvelsPlatform.apiFetch(
+                `/api/admin/users/${encodeURIComponent(u.id)}`,
+                {
+                  method: "PATCH",
+                  body: JSON.stringify({ roleName, gradeId }),
+                },
+              );
+              if (!res.ok) {
+                showError(els.usersError, "Failed to update user.");
+                return;
+              }
+              await loadUsers();
+              renderUsers();
+            });
+
+            deleteBtn.addEventListener("click", async () => {
+              clearErrors();
+              const res = await window.MarvelsPlatform.apiFetch(
+                `/api/admin/users/${encodeURIComponent(u.id)}`,
+                { method: "DELETE" },
+              );
+              if (!res.ok) {
+                showError(els.usersError, "Failed to delete user.");
+                return;
+              }
+              await loadUsers();
+              renderUsers();
+            });
+
+            const actions = document.createElement("div");
+            actions.className = "manage-actions";
+            actions.appendChild(updateBtn);
+            actions.appendChild(deleteBtn);
+
+            const nameTd = document.createElement("td");
+            nameTd.textContent = u.name;
+            const emailTd = document.createElement("td");
+            emailTd.textContent = u.email;
+            const roleTd = document.createElement("td");
+            roleTd.appendChild(roleSelect);
+            const gradeTd = document.createElement("td");
+            gradeTd.appendChild(gradeSelect);
+            const actionsTd = document.createElement("td");
+            actionsTd.appendChild(actions);
+
+            tr.appendChild(nameTd);
+            tr.appendChild(emailTd);
+            tr.appendChild(roleTd);
+            tr.appendChild(gradeTd);
+            tr.appendChild(actionsTd);
+            els.usersTableBody.appendChild(tr);
+          });
+        }
+
+        function renderRooms() {
+          els.roomsTableBody.innerHTML = "";
+          state.rooms.forEach((r) => {
+            const tr = document.createElement("tr");
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "btn-outline";
+            deleteBtn.type = "button";
+            deleteBtn.textContent = "Delete";
+            deleteBtn.addEventListener("click", async () => {
+              clearErrors();
+              const res = await window.MarvelsPlatform.apiFetch(
+                `/api/live-rooms/${encodeURIComponent(r.id)}`,
+                { method: "DELETE" },
+              );
+              if (!res.ok) {
+                showError(els.roomsError, "Failed to delete live room.");
+                return;
+              }
+              await loadRooms();
+              renderRooms();
+            });
+
+            const actions = document.createElement("div");
+            actions.className = "manage-actions";
+            actions.appendChild(deleteBtn);
+
+            tr.innerHTML = `<td></td><td></td><td></td><td></td><td></td>`;
+            tr.children[0].textContent = r.title;
+            tr.children[1].textContent = r.gradeName || "-";
+            tr.children[2].textContent = new Date(r.createdAt).toLocaleString();
+            tr.children[3].textContent = r.createdByName;
+            tr.children[4].appendChild(actions);
+            els.roomsTableBody.appendChild(tr);
+          });
+        }
+
+        function parseUnitLesson(title) {
+          const raw = String(title || "");
+          const m = raw.match(/^U(\d+)-L(\d+):\s*(.+)$/i);
+          if (!m) {
+            return { unit: 9999, lesson: 9999, name: raw.trim() || raw };
+          }
+          return {
+            unit: Number(m[1]),
+            lesson: Number(m[2]),
+            name: String(m[3] || "").trim(),
+          };
+        }
+
+        function renderSessions() {
+          els.sessionsTableBody.innerHTML = "";
+          state.sessions.forEach((s) => {
+            const tr = document.createElement("tr");
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "btn-outline";
+            deleteBtn.type = "button";
+            deleteBtn.textContent = "Delete";
+            deleteBtn.addEventListener("click", async () => {
+              clearErrors();
+              const res = await window.MarvelsPlatform.apiFetch(
+                `/api/recorded-sessions/${encodeURIComponent(s.id)}`,
+                { method: "DELETE" },
+              );
+              if (!res.ok) {
+                showError(
+                  els.sessionsError,
+                  "Failed to delete recorded session.",
+                );
+                return;
+              }
+              await loadSessions();
+              renderSessions();
+            });
+
+            const actions = document.createElement("div");
+            actions.className = "manage-actions";
+            actions.appendChild(deleteBtn);
+
+            const parsed = parseUnitLesson(s.title);
+            tr.innerHTML = `<td></td><td></td><td></td><td></td><td></td><td></td>`;
+            tr.children[0].textContent =
+              parsed.unit === 9999 ? "-" : String(parsed.unit);
+            tr.children[1].textContent =
+              parsed.lesson === 9999 ? "-" : String(parsed.lesson);
+            tr.children[2].textContent = parsed.name || s.title;
+            tr.children[3].textContent = s.gradeName;
+            tr.children[4].textContent = new Date(s.createdAt).toLocaleString();
+            tr.children[5].appendChild(actions);
+            els.sessionsTableBody.appendChild(tr);
+          });
+        }
+
+        async function loadRoles() {
+          const res = await window.MarvelsPlatform.apiFetch("/api/admin/roles");
+          if (!res.ok) throw new Error("roles");
+          const data = await res.json();
+          state.roles = data.roles || [];
+        }
+
+        async function loadGrades() {
+          const res =
+            await window.MarvelsPlatform.apiFetch("/api/admin/grades");
+          if (!res.ok) throw new Error("grades");
+          const data = await res.json();
+          state.grades = data.grades || [];
+
+          els.newRoomGrade.innerHTML = "";
+          state.grades.forEach((g) => {
+            const opt = document.createElement("option");
+            opt.value = String(g.id);
+            opt.textContent = g.name;
+            els.newRoomGrade.appendChild(opt);
+          });
+        }
+
+        async function loadUsers() {
+          const res = await window.MarvelsPlatform.apiFetch("/api/admin/users");
+          if (!res.ok) throw new Error("users");
+          const data = await res.json();
+          state.users = data.users || [];
+        }
+
+        async function loadRooms() {
+          const res = await window.MarvelsPlatform.apiFetch("/api/live-rooms");
+          if (!res.ok) throw new Error("rooms");
+          const data = await res.json();
+          state.rooms = data.rooms || [];
+        }
+
+        async function loadSessions() {
+          const gid = Number(els.recordedGradeFilter.value);
+          if (!Number.isFinite(gid)) {
+            state.sessions = [];
+            return;
+          }
+          const res = await window.MarvelsPlatform.apiFetch(
+            `/api/recorded-sessions?grade_id=${encodeURIComponent(gid)}`,
+          );
+          if (!res.ok) throw new Error("sessions");
+          const data = await res.json();
+          state.sessions = data.sessions || [];
+        }
+
+        function initTabNavigation() {
+          const buttons = Array.from(
+            document.querySelectorAll(".manage-tab-btn"),
+          );
+          const sections = Array.from(
+            document.querySelectorAll(".manage-section"),
+          );
+          buttons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+              buttons.forEach((b) => b.classList.remove("active"));
+              sections.forEach((s) => s.classList.remove("active"));
+              btn.classList.add("active");
+              const id = btn.dataset.tab;
+              const section = sections.find((s) => s.dataset.section === id);
+              if (section) section.classList.add("active");
+            });
+          });
+        }
+
+        els.createUserForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          clearErrors();
+          const payload = {
+            name: els.newUserName.value.trim(),
+            email: els.newUserEmail.value.trim(),
+            password: els.newUserPassword.value,
+            roleName: els.newUserRole.value,
+            gradeId: els.newUserGrade.value || null,
+          };
+
+          const res = await window.MarvelsPlatform.apiFetch(
+            "/api/admin/users",
+            {
+              method: "POST",
+              body: JSON.stringify(payload),
+            },
+          );
+          if (!res.ok) {
+            showError(els.usersError, "Failed to create user.");
+            return;
+          }
+          els.createUserForm.reset();
+          await loadUsers();
+          renderUsers();
+        });
+
+        els.createRoomForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          clearErrors();
+          const payload = {
+            title: els.newRoomTitle.value.trim(),
+            meetingLink: els.newRoomLink.value.trim(),
+            gradeId: Number(els.newRoomGrade.value),
+          };
+          const res = await window.MarvelsPlatform.apiFetch("/api/live-rooms", {
+            method: "POST",
+            body: JSON.stringify(payload),
+          });
+          if (!res.ok) {
+            showError(els.roomsError, "Failed to create live room.");
+            return;
+          }
+          els.createRoomForm.reset();
+          await loadRooms();
+          renderRooms();
+        });
+
+        els.createSessionForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          clearErrors();
+          const unitNo = Number(els.newSessionUnit.value);
+          const lessonNo = Number(els.newSessionLesson.value);
+          const payload = {
+            title: `U${unitNo}-L${lessonNo}: ${els.newSessionTitle.value.trim()}`,
+            videoUrl: els.newSessionUrl.value.trim(),
+            gradeId: Number(els.newSessionGrade.value),
+          };
+          const res = await window.MarvelsPlatform.apiFetch(
+            "/api/recorded-sessions",
+            {
+              method: "POST",
+              body: JSON.stringify(payload),
+            },
+          );
+          if (!res.ok) {
+            showError(els.sessionsError, "Failed to upload recorded session.");
+            return;
+          }
+          els.createSessionForm.reset();
+          await loadSessions();
+          renderSessions();
+        });
+
+        els.recordedGradeFilter.addEventListener("change", async () => {
+          clearErrors();
+          try {
+            await loadSessions();
+            renderSessions();
+          } catch {
+            showError(els.sessionsError, "Failed to load recorded sessions.");
+          }
+        });
+
+        window.addEventListener("auth:ready", async (e) => {
+          state.user = e.detail?.user || null;
+
+          if (!state.user) {
+            window.location.href = "login.html";
+            return;
+          }
+          if (state.user.role !== "administrator") {
+            document.querySelector(".manage-layout").innerHTML =
+              '<div class="auth-card" style="max-width:720px;"><div class="section-header" style="margin-bottom:1rem;"><h2>Access Denied</h2><p>This panel is only available to administrators.</p></div></div>';
+            return;
+          }
+
+          initTabNavigation();
+
+          try {
+            await Promise.all([loadRoles(), loadGrades()]);
+
+            mountSelect(
+              els.newUserRole,
+              state.roles.map((r) => ({ value: r.name, label: r.name })),
+              "Select role",
+            );
+            mountSelect(
+              els.newUserGrade,
+              state.grades.map((g) => ({ value: g.id, label: g.name })),
+              "No grade",
+            );
+            mountSelect(
+              els.newSessionGrade,
+              state.grades.map((g) => ({ value: g.id, label: g.name })),
+              "Select grade",
+            );
+            mountSelect(
+              els.recordedGradeFilter,
+              state.grades.map((g) => ({ value: g.id, label: g.name })),
+              "Select grade",
+            );
+
+            renderRoles();
+            renderGrades();
+
+            await Promise.all([loadUsers(), loadRooms()]);
+            renderUsers();
+            renderRooms();
+
+            els.recordedGradeFilter.value = String(state.grades[0]?.id || "");
+            await loadSessions();
+            renderSessions();
+          } catch {
+            showError(els.usersError, "Failed to load manage panel data.");
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live Sessions - Marvels Maths Academy</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <img
+              src="./site/White_Black_Monogram_M_Business_Logo___1000_x_500_px_-removebg-preview.png"
+              alt="Logo"
+              class="mz-logo"
+            />
+          </div>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#about" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#services" class="nav-link">Services</a>
+            </li>
+            <li class="nav-item">
+              <a href="grades.html" class="nav-link">Grades</a>
+            </li>
+            <li class="nav-item">
+              <a href="live.html" class="nav-link active">Live Sessions</a>
+            </li>
+            <li class="nav-item">
+              <a href="recorded.html" class="nav-link" data-nav="recorded"
+                >Recorded Sessions</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="manage.html" class="nav-link" data-nav="manage"
+                >Manage Panel</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="worksheets.html" class="nav-link">Worksheets</a>
+            </li>
+            <li class="nav-item">
+              <a href="games.html" class="nav-link">Games</a>
+            </li>
+            <li class="nav-item">
+              <a href="plans.html" class="nav-link btn-primary">Plans</a>
+            </li>
+            <li class="nav-item">
+              <a href="steps.html" class="nav-link">How Our Sessions Work</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#contact" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a href="login.html" class="nav-link" data-nav="auth">Login</a>
+            </li>
+          </ul>
+          <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="live-sessions">
+      <div class="container">
+        <div class="live-sessions-layout">
+          <aside class="live-rooms-panel">
+            <h3>Rooms</h3>
+            <p id="roomsHint">Choose a room to open it.</p>
+
+            <div id="roomCreatePanel">
+              <form class="live-room-create-form" id="roomCreateForm">
+                <input
+                  id="roomNameInput"
+                  class="live-room-input"
+                  type="text"
+                  placeholder="Room name"
+                  autocomplete="off"
+                  required
+                />
+                <select id="roomGradeSelect" class="live-room-input" required title="Select grade for the live session room"></select>
+                  <option value="">Select grade</option>
+                </select>
+                <label for="roomDateTimeInput" class="sr-only">Scheduled date and time</label>
+                <input
+                  id="roomDateTimeInput"
+                  class="live-room-input"
+                  type="datetime-local"
+                />
+                <button type="submit" class="btn-primary">Add Room</button>
+              </form>
+            </div>
+
+            <div class="live-rooms-list" id="roomsList"></div>
+          </aside>
+
+          <main class="live-room-main">
+            <div class="live-room-main-header">
+              <div>
+                <div class="live-room-title" id="selectedRoomTitle">
+                  Select a room
+                </div>
+                <div class="live-room-subtitle" id="selectedRoomSubtitle">
+                  Choose a room on the left to view it here.
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="btn-primary live-join-btn"
+                id="joinMeetingBtn"
+                disabled
+              >
+                Join Meeting
+              </button>
+            </div>
+
+            <div class="live-meeting-container" id="meetingContainer">
+              <div class="live-meeting-placeholder" id="meetingPlaceholder">
+                <strong>Meeting not started</strong>
+                <div class="live-meeting-hint">
+                  Select a room, then click “Join Meeting” to open the live
+                  meeting view.
+                </div>
+              </div>
+              <div class="live-meeting-embed" id="jitsiContainer"></div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </section>
+
+    <script type="module" src="script.js"></script>
+    <script src="https://meet.jit.si/external_api.js"></script>
+    <script>
+      (() => {
+        const elements = {
+          roomsList: document.getElementById("roomsList"),
+          roomsHint: document.getElementById("roomsHint"),
+          roomCreatePanel: document.getElementById("roomCreatePanel"),
+          roomCreateForm: document.getElementById("roomCreateForm"),
+          roomNameInput: document.getElementById("roomNameInput"),
+          roomGradeSelect: document.getElementById("roomGradeSelect"),
+          roomDateTimeInput: document.getElementById("roomDateTimeInput"),
+          selectedRoomTitle: document.getElementById("selectedRoomTitle"),
+          selectedRoomSubtitle: document.getElementById("selectedRoomSubtitle"),
+          joinMeetingBtn: document.getElementById("joinMeetingBtn"),
+          meetingContainer: document.getElementById("meetingContainer"),
+          meetingPlaceholder: document.getElementById("meetingPlaceholder"),
+          jitsiContainer: document.getElementById("jitsiContainer"),
+        };
+
+        const state = {
+          user: null,
+          rooms: [],
+          selectedRoomId: null,
+          meetingApi: null,
+        };
+
+        function formatDateTime(value) {
+          if (!value) return "";
+          const date = new Date(value);
+          if (Number.isNaN(date.getTime())) return "";
+          try {
+            return date.toLocaleString(undefined, {
+              dateStyle: "medium",
+              timeStyle: "short",
+            });
+          } catch {
+            return date.toLocaleString();
+          }
+        }
+
+        function canCreateRooms() {
+          const role = state.user?.role || "guest";
+          return role === "administrator" || role === "teacher";
+        }
+
+        function canJoinRooms() {
+          const role = state.user?.role || "guest";
+          return (
+            role === "administrator" ||
+            role === "teacher" ||
+            role === "live_student"
+          );
+        }
+
+        function canSelectRooms() {
+          return canJoinRooms();
+        }
+
+        async function listGrades() {
+          const res = await window.MarvelsPlatform.apiFetch("/api/grades");
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error("grades");
+          return data.grades || [];
+        }
+
+        async function listRooms() {
+          const res = await window.MarvelsPlatform.apiFetch("/api/live-rooms");
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error("rooms");
+          return (data.rooms || []).map((r) => ({
+            id: r.id,
+            name: r.title,
+            createdAt: r.createdAt,
+            meetingLink: r.meetingLink,
+            createdByName: r.createdByName,
+            gradeId: r.gradeId,
+            gradeName: r.gradeName,
+          }));
+        }
+
+        async function createRoom(input) {
+          const res = await window.MarvelsPlatform.apiFetch("/api/live-rooms", {
+            method: "POST",
+            body: JSON.stringify({
+              title: input.name,
+              meetingLink: input.meetingLink || "",
+              gradeId: input.gradeId,
+            }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error("create_room");
+          const r = data.room;
+          return {
+            id: r.id,
+            name: r.title,
+            createdAt: r.createdAt,
+            meetingLink: r.meetingLink,
+            createdByName: r.createdByName,
+            gradeId: r.gradeId,
+            gradeName: r.gradeName,
+          };
+        }
+
+        function parseJitsiMeeting(meetingLink) {
+          try {
+            const url = new URL(meetingLink);
+            const roomName = url.pathname.replace(/^\/+/, "");
+            return {
+              domain: url.hostname,
+              roomName: roomName || "",
+            };
+          } catch {
+            return { domain: "meet.jit.si", roomName: "" };
+          }
+        }
+
+        function disposeMeeting() {
+          if (
+            state.meetingApi &&
+            typeof state.meetingApi.dispose === "function"
+          ) {
+            state.meetingApi.dispose();
+          }
+          state.meetingApi = null;
+          elements.jitsiContainer.innerHTML = "";
+          elements.meetingPlaceholder.style.display = "";
+        }
+
+        function renderRooms() {
+          elements.roomsList.innerHTML = "";
+
+          if (!state.rooms.length) {
+            const empty = document.createElement("div");
+            empty.className = "live-room-item";
+            empty.style.cursor = "default";
+            empty.innerHTML =
+              '<div class="live-room-item-name">No rooms yet</div><div class="live-room-item-meta">Rooms will appear here when they are created.</div>';
+            elements.roomsList.appendChild(empty);
+            return;
+          }
+
+          state.rooms.forEach((room) => {
+            const el = document.createElement(
+              canSelectRooms() ? "button" : "div",
+            );
+            if (canSelectRooms()) el.type = "button";
+            el.className =
+              "live-room-item" +
+              (room.id === state.selectedRoomId ? " active" : "") +
+              (canSelectRooms() ? "" : " is-disabled");
+            el.dataset.roomId = room.id;
+
+            const name = document.createElement("div");
+            name.className = "live-room-item-name";
+            name.textContent = room.name;
+
+            const meta = document.createElement("div");
+            meta.className = "live-room-item-meta";
+            const parts = [];
+            if (room.gradeName) parts.push(room.gradeName);
+            if (room.createdByName) parts.push(`By ${room.createdByName}`);
+            if (room.createdAt) parts.push(formatDateTime(room.createdAt));
+            meta.textContent = parts.filter(Boolean).join(" • ") || "Room";
+
+            el.appendChild(name);
+            el.appendChild(meta);
+            elements.roomsList.appendChild(el);
+          });
+        }
+
+        function setSelectedRoom(roomId) {
+          const room = state.rooms.find((r) => r.id === roomId);
+          state.selectedRoomId = room ? roomId : null;
+          disposeMeeting();
+
+          if (!room) {
+            elements.selectedRoomTitle.textContent = "Select a room";
+            elements.selectedRoomSubtitle.textContent =
+              "Choose a room on the left to view it here.";
+            elements.joinMeetingBtn.disabled = true;
+            renderRooms();
+            return;
+          }
+
+          elements.selectedRoomTitle.textContent = room.name;
+          elements.selectedRoomSubtitle.textContent =
+            formatDateTime(room.createdAt) ||
+            (room.createdByName
+              ? `Created by ${room.createdByName}`
+              : "Room details");
+          elements.joinMeetingBtn.disabled =
+            !canJoinRooms() || !room.meetingLink;
+          renderRooms();
+        }
+
+        function startMeeting() {
+          const room = state.rooms.find((r) => r.id === state.selectedRoomId);
+          if (!room) return;
+          if (!canJoinRooms()) return;
+          if (!room.meetingLink) {
+            elements.selectedRoomSubtitle.textContent =
+              "This room is disabled for your role.";
+            return;
+          }
+
+          const parsed = parseJitsiMeeting(room.meetingLink);
+          if (!parsed.roomName) {
+            elements.selectedRoomSubtitle.textContent =
+              "Invalid meeting link for this room.";
+            return;
+          }
+
+          disposeMeeting();
+          elements.meetingPlaceholder.style.display = "none";
+          if (window.JitsiMeetExternalAPI) {
+            state.meetingApi = new JitsiMeetExternalAPI(parsed.domain, {
+              roomName: parsed.roomName,
+              parentNode: elements.jitsiContainer,
+              width: "100%",
+              height: 520,
+            });
+            return;
+          }
+
+          const iframe = document.createElement("iframe");
+          iframe.src = room.meetingLink;
+          iframe.title = "Live Meeting";
+          iframe.allow = "camera; microphone; fullscreen; display-capture";
+          iframe.allowFullscreen = true;
+          iframe.style.width = "100%";
+          iframe.style.height = "520px";
+          iframe.style.border = "0";
+          elements.jitsiContainer.appendChild(iframe);
+        }
+
+        elements.roomsList.addEventListener("click", (e) => {
+          const target = e.target.closest(".live-room-item");
+          if (!target || !target.dataset.roomId) return;
+          if (!canSelectRooms()) return;
+          setSelectedRoom(target.dataset.roomId);
+        });
+
+        elements.roomCreateForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          if (!canCreateRooms()) return;
+          const name = elements.roomNameInput.value.trim();
+          if (!name) return;
+          const gradeId = Number(elements.roomGradeSelect.value);
+          if (!Number.isFinite(gradeId)) return;
+
+          const scheduledFor = elements.roomDateTimeInput.value || "";
+          const displayTitle = scheduledFor
+            ? `${name} (${formatDateTime(scheduledFor) || scheduledFor})`
+            : name;
+
+          const meetingLink = "";
+          const newRoom = await createRoom({
+            name: displayTitle,
+            meetingLink,
+            gradeId,
+          });
+          state.rooms = [newRoom, ...state.rooms];
+
+          elements.roomCreateForm.reset();
+          setSelectedRoom(newRoom.id);
+        });
+
+        elements.joinMeetingBtn.addEventListener("click", startMeeting);
+
+        (async () => {
+          const user = await window.MarvelsPlatform.whenReady();
+          state.user = user;
+
+          const createEnabled = canCreateRooms();
+          elements.roomsHint.textContent = createEnabled
+            ? "Create a room or choose one to open it."
+            : "Choose a room to open it.";
+          elements.roomCreatePanel.style.display = createEnabled ? "" : "none";
+
+          if (createEnabled) {
+            const grades = await listGrades();
+            elements.roomGradeSelect.innerHTML =
+              '<option value="">Select grade</option>';
+            grades.forEach((g) => {
+              const opt = document.createElement("option");
+              opt.value = String(g.id);
+              opt.textContent = g.name;
+              elements.roomGradeSelect.appendChild(opt);
+            });
+          }
+
+          state.rooms = await listRooms();
+          renderRooms();
+          if (state.rooms.length && canSelectRooms())
+            setSelectedRoom(state.rooms[0].id);
+          if (!canJoinRooms()) elements.joinMeetingBtn.disabled = true;
+        })();
+      })();
+    </script>
+  </body>
+</html>

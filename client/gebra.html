@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Games - Marvels Maths Academy</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <img
+              src="./site/White_Black_Monogram_M_Business_Logo___1000_x_500_px_-removebg-preview.png"
+              alt="Logo"
+              class="mz-logo"
+            />
+          </div>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#about" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#services" class="nav-link">Services</a>
+            </li>
+            <li class="nav-item">
+              <a href="grades.html" class="nav-link">Grades</a>
+            </li>
+            <li class="nav-item">
+              <a href="live.html" class="nav-link">Live Sessions</a>
+            </li>
+            <li class="nav-item">
+              <a href="recorded.html" class="nav-link" data-nav="recorded"
+                >Recorded Sessions</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="manage.html" class="nav-link" data-nav="manage"
+                >Manage Panel</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="worksheets.html" class="nav-link">Worksheets</a>
+            </li>
+            <li class="nav-item">
+              <a href="games.html" class="nav-link active">Games</a>
+            </li>
+            <li class="nav-item">
+              <a href="plans.html" class="nav-link btn-primary">Plans</a>
+            </li>
+            <li class="nav-item">
+              <a href="steps.html" class="nav-link">How Our Sessions Work</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#contact" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a href="login.html" class="nav-link" data-nav="auth">Login</a>
+            </li>
+          </ul>
+          <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="live-sessions">
+      <div class="container">
+        <div class="games-layout">
+          <aside class="games-sidebar">
+            <div class="games-tool-list">
+   
+            </div>
+          </aside>
+
+          <main class="games-main">
+            <div class="games-toolbar">
+              <div class="games-toolbar-left">
+                <div class="live-room-title" id="toolTitle">Graph</div>
+                <div class="live-room-subtitle" id="toolUrlText"></div>
+              </div>
+              <a
+                class="btn-outline"
+                id="openToolLink"
+                href="https://www.baamboozle.com/"
+                target="_blank"
+                rel="noreferrer noopener"
+                >Open</a
+              >
+            </div>
+
+            <div class="games-frame-wrap">
+              <iframe
+                class="games-iframe"
+                id="toolFrame"
+      src="https://www.geogebra.org/classic"
+
+                title="Tool"
+                loading="lazy"
+              ></ifram>
+            </div>
+          </main>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

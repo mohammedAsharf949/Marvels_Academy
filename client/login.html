@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Marvels Maths Academy</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <img
+              src="./site/White_Black_Monogram_M_Business_Logo___1000_x_500_px_-removebg-preview.png"
+              alt="Logo"
+              class="mz-logo"
+            />
+          </div>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#about" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#services" class="nav-link">Services</a>
+            </li>
+            <li class="nav-item">
+              <a href="grades.html" class="nav-link">Grades</a>
+            </li>
+            <li class="nav-item">
+              <a href="live.html" class="nav-link">Live Sessions</a>
+            </li>
+            <li class="nav-item">
+              <a href="recorded.html" class="nav-link" data-nav="recorded"
+                >Recorded Sessions</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="manage.html" class="nav-link" data-nav="manage"
+                >Manage Panel</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="worksheets.html" class="nav-link">Worksheets</a>
+            </li>
+            <li class="nav-item">
+              <a href="games.html" class="nav-link">Games</a>
+            </li>
+            <li class="nav-item">
+              <a href="plans.html" class="nav-link btn-primary">Plans</a>
+            </li>
+            <li class="nav-item">
+              <a href="steps.html" class="nav-link">How Our Sessions Work</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#contact" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a href="login.html" class="nav-link active" data-nav="auth"
+                >Login</a
+              >
+            </li>
+          </ul>
+          <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="auth-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Login</h2>
+          <p>Sign in to access your sessions.</p>
+        </div>
+
+        <div class="auth-card">
+          <div class="auth-error" id="loginError"></div>
+          <form class="auth-form" id="loginForm">
+            <input
+              class="auth-input"
+              type="email"
+              id="emailInput"
+              placeholder="Email"
+              autocomplete="email"
+              required
+            />
+            <input
+              class="auth-input"
+              type="password"
+              id="passwordInput"
+              placeholder="Password"
+              autocomplete="current-password"
+              required
+            />
+            <button class="btn-primary" type="submit">Login</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <script type="module" src="script.js"></script>
+    <script>
+      (() => {
+        const els = {
+          form: document.getElementById("loginForm"),
+          email: document.getElementById("emailInput"),
+          password: document.getElementById("passwordInput"),
+          error: document.getElementById("loginError"),
+        };
+
+        function showError(msg) {
+          els.error.textContent = msg;
+          els.error.style.display = "block";
+        }
+
+        function clearError() {
+          els.error.textContent = "";
+          els.error.style.display = "none";
+        }
+
+        if (window.location.protocol === "file:") {
+          showError(
+            "لازم تفتح الموقع من السيرفر: http://localhost:3000/login.html (مش من ملف مباشر).",
+          );
+        }
+
+        function routeByRole(user) {
+          if (!user) return "index.html";
+          if (user.pwdNeedsReset) return "set-password.html";
+          if (user.role === "administrator") return "manage.html";
+          if (user.role === "recorded_student") return "recorded.html";
+          return "live.html";
+        }
+
+        window.addEventListener("auth:ready", (e) => {
+          const user = e.detail?.user;
+          if (user) window.location.href = routeByRole(user);
+        });
+
+        els.form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          clearError();
+          const email = els.email.value.trim();
+          const password = els.password.value;
+
+          try {
+            const res = await window.MarvelsPlatform.apiFetch(
+              "/api/auth/login",
+              {
+                method: "POST",
+                body: JSON.stringify({ email, password }),
+              },
+            );
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+              showError("Invalid email or password.");
+              return;
+            }
+            if (data.token) window.MarvelsPlatform.setToken(data.token);
+            if (data.mustResetPassword) {
+              window.location.href = "set-password.html";
+              return;
+            }
+            window.location.href = routeByRole(data.user);
+          } catch {
+            showError(
+              "فشل الاتصال بالسيرفر. تأكد إن السيرفر شغال وافتح الصفحة من http://localhost:3000/ .",
+            );
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

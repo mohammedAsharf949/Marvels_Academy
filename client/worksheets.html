@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Worksheets | Marvels Maths Academy</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <img
+              src="./site/White_Black_Monogram_M_Business_Logo___1000_x_500_px_-removebg-preview.png"
+              alt="Logo"
+              class="mz-logo"
+            />
+          </div>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#about" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#services" class="nav-link">Services</a>
+            </li>
+            <li class="nav-item">
+              <a href="grades.html" class="nav-link">Grades</a>
+            </li>
+            <li class="nav-item">
+              <a href="live.html" class="nav-link">Live Sessions</a>
+            </li>
+            <li class="nav-item">
+              <a href="recorded.html" class="nav-link" data-nav="recorded"
+                >Recorded Sessions</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="manage.html" class="nav-link" data-nav="manage"
+                >Manage Panel</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="worksheets.html" class="nav-link active">Worksheets</a>
+            </li>
+            <li class="nav-item">
+              <a href="games.html" class="nav-link">Games</a>
+            </li>
+            <li class="nav-item">
+              <a href="plans.html" class="nav-link btn-primary">Plans</a>
+            </li>
+            <li class="nav-item">
+              <a href="steps.html" class="nav-link">How Our Sessions Work</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#contact" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a href="login.html" class="nav-link" data-nav="auth">Login</a>
+            </li>
+          </ul>
+          <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <!-- Hero Section -->
+    <section class="hero worksheets-hero">
+      <div class="hero-container worksheets-hero-flex">
+        <div class="hero-content">
+          <h1 class="hero-title">Free Printable Math Worksheets</h1>
+          <p class="hero-description">
+            Browse our collection of engaging, curriculum-aligned worksheets for
+            all grades and topics. Download and print to boost your learning!
+          </p>
+        </div>
+        <div class="worksheets-hero-img">
+          <img src="" alt="Math learning banner" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter/Search Bar (static) -->
+    <section class="worksheet-filters">
+      <div class="container">
+        <form class="filters-form">
+          <select name="grade" class="filter-select" aria-label="Grade filter"></select>
+            <option value="">All Grades</option>
+            <option value="k">Kindergarten</option>
+            <option value="1">Grade 1</option>
+            <option value="2">Grade 2</option>
+            <option value="3">Grade 3</option>
+            <option value="4">Grade 4</option>
+            <option value="5">Grade 5</option>
+            <option value="6">Grade 6</option>
+            <option value="7">Grade 7</option>
+          </select>
+          <input
+            type="text"
+            class="filter-search"
+            placeholder="Search worksheets..."
+          />
+        </form>
+      </div>
+    </section>
+
+    <!-- Worksheets Grid -->
+    <section class="worksheets-grid-section">
+      <div class="container">
+        <div class="worksheets-grid">
+          <!-- Worksheet Card 1 -->
+          <div class="worksheet-card">
+            <img
+              src="https://via.placeholder.com/200x150?text=Addition"
+              alt="Addition Worksheet"
+            />
+            <h3>Addition Practice</h3>
+            <p>Grade 1 | Arithmetic</p>
+            <a href="#" class="btn btn-outline">Download PDF</a>
+          </div>
+          <!-- Worksheet Card 2 -->
+          <div class="worksheet-card">
+            <img
+              src="https://via.placeholder.com/200x150?text=Multiplication"
+              alt="Multiplication Worksheet"
+            />
+            <h3>Multiplication Drill</h3>
+            <p>Grade 3 | Arithmetic</p>
+            <a href="#" class="btn btn-outline">Download PDF</a>
+          </div>
+          <!-- Worksheet Card 3 -->
+          <div class="worksheet-card">
+            <img
+              src="https://via.placeholder.com/200x150?text=Fractions"
+              alt="Fractions Worksheet"
+            />
+            <h3>Understanding Fractions</h3>
+            <p>Grade 4 | Fractions</p>
+            <a href="#" class="btn btn-outline">Download PDF</a>
+          </div>
+          <!-- Worksheet Card 4 -->
+          <div class="worksheet-card">
+            <img
+              src="https://via.placeholder.com/200x150?text=Algebra"
+              alt="Algebra Worksheet"
+            />
+            <h3>Intro to Algebra</h3>
+            <p>Grade 5 | Algebra</p>
+            <a href="#" class="btn btn-outline">Download PDF</a>
+          </div>
+          <!-- Worksheet Card 5 -->
+          <div class="worksheet-card">
+            <img
+              src="https://via.placeholder.com/200x150?text=Geometry"
+              alt="Geometry Worksheet"
+            />
+            <h3>Shapes & Geometry</h3>
+            <p>Grade 2 | Geometry</p>
+            <a href="#" class="btn btn-outline">Download PDF</a>
+          </div>
+          <!-- Worksheet Card 6 -->
+          <div class="worksheet-card">
+            <img
+              src="https://via.placeholder.com/200x150?text=Word+Problems"
+              alt="Word Problems Worksheet"
+            />
+            <h3>Word Problems</h3>
+            <p>Grade 3 | Problem Solving</p>
+            <a href="#" class="btn btn-outline">Download PDF</a>
+          </div>
+          <!-- Worksheet Card 7: Grade 6 -->
+          <div class="worksheet-card">
+            <img
+              src="https://via.placeholder.com/200x150?text=Percentages"
+              alt="Percentages Worksheet"
+            />
+            <h3>Working with Percentages</h3>
+            <p>Grade 6 | Arithmetic</p>
+            <a href="#" class="btn btn-outline">Download PDF</a>
+          </div>
+          <!-- Worksheet Card 8: Grade 7 -->
+          <div class="worksheet-card">
+            <img
+              src="https://via.placeholder.com/200x150?text=Linear+Equations"
+              alt="Linear Equations Worksheet"
+            />
+            <h3>Linear Equations Practice</h3>
+            <p>Grade 7 | Algebra</p>
+            <a href="#" class="btn btn-outline">Download PDF</a>
+          </div>
+        </div>
+        <!-- Pagination/Load More (static) -->
+        <div class="worksheets-pagination">
+          <button class="btn btn-secondary">Load More</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer (reuse from index.html) -->
+    <footer id="contact" class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <div class="footer-logo">
+              <img
+                src="./site/White_Black_Monogram_M_Business_Logo___1000_x_500_px_-removebg-preview.png"
+                alt="Logo"
+                class="mz-logo"
+              />
+            </div>
+            <p>
+              Empowering students worldwide with innovative mathematics
+              education through technology and expert guidance.
+            </p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#about">About Us</a></li>
+              <li><a href="#services">Services</a></li>
+              <li><a href="plans.html">Plans</a></li>
+              <li><a href="#contact">Contact</a></li>
+              <li><a href="worksheets.html">Worksheets</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Courses</h4>
+            <ul>
+              <li><a href="#">Basic Mathematics</a></li>
+              <li><a href="#">Algebra</a></li>
+              <li><a href="#">Geometry</a></li>
+              <li><a href="#">Calculus</a></li>
+              <li><a href="#">Statistics</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Contact Info</h4>
+            <div class="contact-info">
+              <p><i class="fas fa-envelope"></i></p>
+              <p><i class="fas fa-phone"></i></p>
+              <p>
+                <i class="fas fa-map-marker-alt"></i>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2022 Marvels Maths Academy. All rights reserved.</p>
+          <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

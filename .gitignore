@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+dist/
+client/dist/
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.development
+server/.env
+client/.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Heavy Data (Keep local only)
+EducationWorksheets/
+client/EducationWorksheets/
+*.pdf
+mr-pandas-psychologically-safe-portfolio-main/
+client/mr-pandas-psychologically-safe-portfolio-main/
+# Python
+.venv/
+client/.venv/
+__pycache__/
+*.pyc
+
+# Locks
+package-lock.json

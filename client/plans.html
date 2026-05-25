@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learning Plans - MathMaster Pro</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      .plans-hero {
+        background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+        color: white;
+        padding: 120px 0 80px;
+        text-align: center;
+      }
+
+      .plans-hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+
+      .plans-hero p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .pricing-toggle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin: 3rem 0;
+      }
+
+      .toggle-switch {
+        position: relative;
+        width: 60px;
+        height: 30px;
+        background: #e2e8f0;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .toggle-switch.active {
+        background: #2563eb;
+      }
+
+      .toggle-slider {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 26px;
+        height: 26px;
+        background: white;
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+      }
+
+      .toggle-switch.active .toggle-slider {
+        transform: translateX(30px);
+      }
+
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        margin: 4rem 0;
+      }
+
+      .pricing-card {
+        background: white;
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+        text-align: center;
+      }
+
+      .pricing-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .pricing-card.featured {
+        border-color: #2563eb;
+        transform: scale(1.05);
+      }
+
+      .pricing-card.featured:hover {
+        transform: scale(1.05) translateY(-10px);
+      }
+
+      .plan-badge {
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #2563eb, #3b82f6);
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      .plan-name {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 1rem;
+      }
+
+      .plan-description {
+        color: #64748b;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+      }
+
+      .plan-price {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #2563eb;
+        margin-bottom: 0.5rem;
+      }
+
+      .plan-period {
+        color: #64748b;
+        font-size: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .plan-features {
+        list-style: none;
+        margin-bottom: 2rem;
+        text-align: left;
+      }
+
+      .plan-features li {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        color: #64748b;
+      }
+
+      .plan-features i {
+        color: #10b981;
+        font-size: 1rem;
+        width: 20px;
+      }
+
+      .plan-features .unavailable {
+        color: #94a3b8;
+      }
+
+      .plan-features .unavailable i {
+        color: #cbd5e1;
+      }
+
+      .cta-button {
+        width: 100%;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-block;
+        text-align: center;
+        border: 2px solid transparent;
+      }
+
+      .cta-primary {
+        background: linear-gradient(135deg, #2563eb, #3b82f6);
+        color: white;
+      }
+
+      .cta-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        color: white;
+      }
+
+      .cta-outline {
+        background: transparent;
+        color: #2563eb;
+        border-color: #2563eb;
+      }
+
+      .cta-outline:hover {
+        background: #2563eb;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .comparison-table {
+        margin: 4rem 0;
+        overflow-x: auto;
+      }
+
+      .comparison-table table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 1.5rem;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .comparison-table th {
+        background: #f8fafc;
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .comparison-table th:first-child {
+        background: #2563eb;
+        color: white;
+      }
+
+      .comparison-table tr:hover {
+        background: #f8fafc;
+      }
+
+      .feature-check {
+        color: #10b981;
+        font-size: 1.2rem;
+      }
+
+      .feature-cross {
+        color: #ef4444;
+        font-size: 1.2rem;
+      }
+
+      .faq-section {
+        background: #f8fafc;
+        padding: 4rem 0;
+      }
+
+      .faq-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 2rem;
+      }
+
+      .faq-item {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .faq-question {
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+      }
+
+      .faq-answer {
+        color: #64748b;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 768px) {
+        .plans-hero h1 {
+          font-size: 2rem;
+        }
+
+        .pricing-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .pricing-card.featured {
+          transform: none;
+        }
+
+        .pricing-card.featured:hover {
+          transform: translateY(-10px);
+        }
+
+        .comparison-table {
+          font-size: 0.9rem;
+        }
+
+        .faq-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <img
+              src="./site/White_Black_Monogram_M_Business_Logo___1000_x_500_px_-removebg-preview.png"
+              alt="Logo"
+              class="mz-logo"
+            />
+          </div>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#about" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#services" class="nav-link">Services</a>
+            </li>
+            <li class="nav-item">
+              <a href="grades.html" class="nav-link">Grades</a>
+            </li>
+            <li class="nav-item">
+              <a href="live.html" class="nav-link">Live Sessions</a>
+            </li>
+            <li class="nav-item">
+              <a href="recorded.html" class="nav-link" data-nav="recorded"
+                >Recorded Sessions</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="manage.html" class="nav-link" data-nav="manage"
+                >Manage Panel</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="worksheets.html" class="nav-link">Worksheets</a>
+            </li>
+            <li class="nav-item">
+              <a href="games.html" class="nav-link">Games</a>
+            </li>
+            <li class="nav-item">
+              <a href="plans.html" class="nav-link btn-primary">Plans</a>
+            </li>
+            <li class="nav-item">
+              <a href="steps.html" class="nav-link">How Our Sessions Work</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#contact" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a href="login.html" class="nav-link" data-nav="auth">Login</a>
+            </li>
+          </ul>
+          <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <!-- Plans Hero Section -->
+    <section class="plans-hero">
+      <div class="container">
+        <h1>Choose Your Learning Path</h1>
+        <p>
+          Select the perfect plan that matches your learning goals and budget.
+          All plans include our core features with additional benefits for
+          premium members.
+        </p>
+
+        <div class="pricing-toggle">
+          <span>
+            <span style="color: #b91010; font-weight: bold"></span>
+            Monthly ( 8 seesions )
+          </span>
+          <div class="toggle-switch" id="pricingToggle">
+            <div class="toggle-slider"></div>
+          </div>
+          <span>session </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing Plans -->
+    <section class="pricing-section">
+      <div class="container">
+        <div class="pricing-grid">
+          <!-- Basic Plan -->
+          <div class="pricing-card featured">
+            <div class="plan-badge">Most Popular</div>
+            <div class="plan-name">Group max.4 students</div>
+            <div class="plan-description">
+              Perfect for beginners starting their mathematical journey
+            </div>
+            <div class="plan-price" data-monthly="800" data-yearly="100">
+              800 L.E
+            </div>
+            <div class="plan-period">per month ( 8 seesions )</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check"></i> Core mathematics concepts</li>
+              <li><i class="fas fa-check"></i> Interactive exercises</li>
+              <li><i class="fas fa-check"></i> Progress tracking</li>
+              <li><i class="fas fa-check"></i> Email support</li>
+              <li><i class="fas fa-check"></i> Mobile app access</li>
+              <li><i class="fas fa-check"></i> Basic analytics</li>
+              <li class="unavailable">
+                <i class="fas fa-times"></i> Live tutoring sessions
+              </li>
+              <li class="unavailable">
+                <i class="fas fa-times"></i> Advanced problem sets
+              </li>
+              <li class="unavailable">
+                <i class="fas fa-times"></i> 1-on-1 consultations
+              </li>
+            </ul>
+            <a href="#" class="cta-button cta-outline">Get Started</a>
+          </div>
+
+          <!-- Premium Plan -->
+          <div class="pricing-card">
+            <div class="plan-name">Private 1 to 1</div>
+            <div class="plan-description">
+              Comprehensive learning experience with advanced features
+            </div>
+            <div class="plan-price" data-monthly="1600" data-yearly="200">
+              1600ج.م
+            </div>
+            <div class="plan-period">per month ( 8 seesions )</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check"></i> All Basic features</li>
+              <li><i class="fas fa-check"></i> Live tutoring sessions</li>
+              <li><i class="fas fa-check"></i> Advanced problem sets</li>
+              <li><i class="fas fa-check"></i> 1-on-1 consultations</li>
+              <li><i class="fas fa-check"></i> Priority support</li>
+              <li><i class="fas fa-check"></i> Advanced analytics</li>
+              <li><i class="fas fa-check"></i> Custom study plans</li>
+              <li><i class="fas fa-check"></i> Exam preparation</li>
+              <li><i class="fas fa-check"></i> Certificate upon completion</li>
+            </ul>
+            <a href="#" class="cta-button cta-primary">Get Started</a>
+          </div>
+
+          <!-- Enterprise Plan -->
+          <!-- <div class="pricing-card">
+            <div class="plan-name">Enterprise Plan</div>
+            <div class="plan-description">
+              Custom solutions for schools and organizations
+            </div>
+            <div class="plan-price" data-monthly="199" data-yearly="1919">
+              $199
+            </div>
+            <div class="plan-period">per month</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check"></i> All Premium features</li>
+              <li><i class="fas fa-check"></i> Custom curriculum</li>
+              <li><i class="fas fa-check"></i> Analytics dashboard</li>
+              <li><i class="fas fa-check"></i> Dedicated support team</li>
+              <li><i class="fas fa-check"></i> API access</li>
+              <li><i class="fas fa-check"></i> White-label solution</li>
+              <li><i class="fas fa-check"></i> Bulk user management</li>
+              <li><i class="fas fa-check"></i> Custom integrations</li>
+              <li><i class="fas fa-check"></i> Training sessions</li>
+            </ul>
+            <a href="#" class="cta-button cta-outline">Contact Sales</a>
+          </div> -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <!-- <section class="comparison-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Feature Comparison</h2>
+          <p>
+            Compare all features across our different plans to make the best
+            choice
+          </p>
+        </div>
+        <div class="comparison-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Features</th>
+                <th>Basic</th>
+                <th>Premium</th>
+                <th>Enterprise</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Core Mathematics Concepts</td>
+                <td><i class="fas fa-check feature-check"></i></td>
+                <td><i class="fas fa-check feature-check"></i></td>
+                <td><i class="fas fa-check feature-check"></i></td>
+              </tr>
+              <tr>
+                <td>Interactive Exercises</td>
+                <td><i class="fas fa-check feature-check"></i></td>
+                <td><i class="fas fa-check feature-check"></i></td>
+                <td><i class="fas fa-check feature-check"></i></td>
+              </tr>
+              <tr>
+                <td>Progress Tracking</td>
+                <td><i class="fas fa-check feature-check"></i></td>
+                <td><i class="fas fa-check feature-check"></i></td>
+                <td><i class="fas fa-check feature-check"></i></td>
+              </tr>
+              <tr>
+                <td>Live Tutoring Sessions</td>
+                <td><i class="fas fa-times feature-cross"></i></td>
+                <td><i class="fas fa-check feature-check"></i></td>
+                <td><i class="fas fa-check feature-check"></i></td>
+              </tr>
+              <tr>
+                <td>1-on-1 Consultations</td>
+                <td><i class="fas fa-times feature-cross"></i></td>
+                <td><i class="fas fa-check feature-check"></i></td>
+                <td><i class="fas fa-check feature-check"></i></td>
+              </tr>
+              <tr>
+                <td>Custom Curriculum</td>
+                <td><i class="fas fa-times feature-cross"></i></td>
+                <td><i class="fas fa-times feature-cross"></i></td>
+                <td><i class="fas fa-check feature-check"></i></td>
+              </tr>
+              <tr>
+                <td>Analytics Dashboard</td>
+                <td><i class="fas fa-times feature-cross"></i></td>
+                <td><i class="fas fa-times feature-cross"></i></td>
+                <td><i class="fas fa-check feature-check"></i></td>
+              </tr>
+              <tr>
+                <td>API Access</td>
+                <td><i class="fas fa-times feature-cross"></i></td>
+                <td><i class="fas fa-times feature-cross"></i></td>
+                <td><i class="fas fa-check feature-check"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Frequently Asked Questions</h2>
+          <p>Find answers to common questions about our learning plans</p>
+        </div>
+        <div class="faq-grid">
+          <div class="faq-item">
+            <div class="faq-question">Can I switch between plans?</div>
+            <div class="faq-answer">
+              Yes, you can upgrade or downgrade your plan at any time. Changes
+              will be reflected in your next billing cycle.
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">Is there a free trial available?</div>
+            <div class="faq-answer">
+              We offer a 7-day free trial for all plans. No credit card required
+              to start your trial.
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">What payment methods do you accept?</div>
+            <div class="faq-answer">
+              We accept all major credit cards, PayPal, and bank transfers for
+              enterprise plans.
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              Can I cancel my subscription anytime?
+            </div>
+            <div class="faq-answer">
+              Yes, you can cancel your subscription at any time. You'll continue
+              to have access until the end of your billing period.
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">Do you offer refunds?</div>
+            <div class="faq-answer">
+              We offer a 30-day money-back guarantee for all plans. If you're
+              not satisfied, we'll refund your payment.
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">Is there a family plan available?</div>
+            <div class="faq-answer">
+              Yes, we offer family plans with discounts for multiple users.
+              Contact our sales team for more information.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <div class="footer-logo">
+              <img
+                src="./site/White_Black_Monogram_M_Business_Logo___1000_x_500_px_-removebg-preview.png"
+                alt="Logo"
+                class="mz-logo"
+              />
+            </div>
+            <p>
+              Empowering students worldwide with innovative mathematics
+              education through technology and expert guidance.
+            </p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#about">About Us</a></li>
+              <li><a href="#services">Services</a></li>
+              <li><a href="plans.html">Plans</a></li>
+              <li><a href="#contact">Contact</a></li>
+              <li><a href="worksheets.html">Worksheets</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Courses</h4>
+            <ul>
+              <li><a href="#">Basic Mathematics</a></li>
+              <li><a href="#">Algebra</a></li>
+              <li><a href="#">Geometry</a></li>
+              <li><a href="#">Calculus</a></li>
+              <li><a href="#">Statistics</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Contact Info</h4>
+            <div class="contact-info">
+              <p><i class="fas fa-envelope"></i></p>
+              <p><i class="fas fa-phone"></i></p>
+              <p>
+                <i class="fas fa-map-marker-alt"></i>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2022 Marvels Maths Academy. All rights reserved.</p>
+          <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+      // Pricing toggle functionality
+      const pricingToggle = document.getElementById("pricingToggle");
+      const planPrices = document.querySelectorAll(".plan-price");
+      const planPeriods = document.querySelectorAll(".plan-period");
+      let isYearly = false;
+
+      pricingToggle.addEventListener("click", () => {
+        isYearly = !isYearly;
+        pricingToggle.classList.toggle("active");
+
+        planPrices.forEach((price) => {
+          const monthly = price.getAttribute("data-monthly");
+          const yearly = price.getAttribute("data-yearly");
+
+          if (isYearly) {
+            price.textContent = yearly + "L.E";
+            price.nextElementSibling.textContent = "per session";
+          } else {
+            price.textContent = monthly + "L.E";
+            price.nextElementSibling.textContent = "per month( 8 seesions )";
+          }
+        });
+      });
+
+      // Add hover effects to pricing cards
+      document.querySelectorAll(".pricing-card").forEach((card) => {
+        card.addEventListener("mouseenter", () => {
+          if (!card.classList.contains("featured")) {
+            card.style.transform = "translateY(-10px)";
+          }
+        });
+
+        card.addEventListener("mouseleave", () => {
+          if (!card.classList.contains("featured")) {
+            card.style.transform = "translateY(0)";
+          }
+        });
+      });
+
+      // FAQ accordion functionality (if needed)
+      document.querySelectorAll(".faq-item").forEach((item) => {
+        item.addEventListener("click", () => {
+          item.style.transform = "scale(0.98)";
+          setTimeout(() => {
+            item.style.transform = "scale(1)";
+          }, 150);
+        });
+      });
+    </script>
+  </body>
+</html>

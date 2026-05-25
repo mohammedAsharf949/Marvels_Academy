@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recorded Sessions - Marvels Maths Academy</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <img
+              src="./site/White_Black_Monogram_M_Business_Logo___1000_x_500_px_-removebg-preview.png"
+              alt="Logo"
+              class="mz-logo"
+            />
+          </div>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#about" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#services" class="nav-link">Services</a>
+            </li>
+            <li class="nav-item">
+              <a href="grades.html" class="nav-link">Grades</a>
+            </li>
+            <li class="nav-item">
+              <a href="live.html" class="nav-link">Live Sessions</a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="recorded.html"
+                class="nav-link active"
+                data-nav="recorded"
+                >Recorded Sessions</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="manage.html" class="nav-link" data-nav="manage"
+                >Manage Panel</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="worksheets.html" class="nav-link">Worksheets</a>
+            </li>
+            <li class="nav-item">
+              <a href="games.html" class="nav-link">Games</a>
+            </li>
+            <li class="nav-item">
+              <a href="plans.html" class="nav-link btn-primary">Plans</a>
+            </li>
+            <li class="nav-item">
+              <a href="steps.html" class="nav-link">How Our Sessions Work</a>
+            </li>
+            <li class="nav-item">
+              <a href="index.html#contact" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a href="login.html" class="nav-link" data-nav="auth">Login</a>
+            </li>
+          </ul>
+          <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="live-sessions">
+      <div class="container">
+        <div class="recorded-course-layout">
+          <aside class="recorded-course-sidebar">
+            <div class="recorded-course-sidebar-header">
+              <div class="recorded-course-sidebar-title">Choose your Grade</div>
+              <div class="live-room-subtitle" id="recordedGradeHint"></div>
+            </div>
+
+            <div class="recorded-course-grades" id="gradesList"></div>
+
+            <div class="recorded-course-units" id="unitsList"></div>
+          </aside>
+
+          <main class="recorded-course-player">
+            <div
+              class="recorded-player-frame-wrap recorded-player-frame-wrap-lg"
+            >
+              <iframe
+                class="recorded-video-frame recorded-video-frame-lg"
+                id="videoFrame"
+                title="Recorded Session"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </div>
+
+            <div class="recorded-player-meta recorded-player-meta-lg">
+              <div class="recorded-player-meta-row">
+                <div>
+                  <div class="recorded-player-title" id="playerSessionTitle">
+                    Select a session
+                  </div>
+                  <div class="recorded-player-subtitle" id="playerLessonName">
+                    Choose a grade and lesson from the list.
+                  </div>
+                  <div class="recorded-player-details" id="playerDetails"></div>
+                </div>
+                <a
+                  class="btn-outline"
+                  id="openVideoLink"
+                  href="#"
+                  target="_blank"
+                  rel="noreferrer"
+                ></a>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </section>
+
+    <script type="module" src="script.js"></script>
+    <script>
+      (() => {
+        const els = {
+          gradesList: document.getElementById("gradesList"),
+          unitsList: document.getElementById("unitsList"),
+          recordedGradeHint: document.getElementById("recordedGradeHint"),
+          openVideoLink: document.getElementById("openVideoLink"),
+          videoFrame: document.getElementById("videoFrame"),
+          playerSessionTitle: document.getElementById("playerSessionTitle"),
+          playerLessonName: document.getElementById("playerLessonName"),
+          playerDetails: document.getElementById("playerDetails"),
+        };
+
+        const state = {
+          user: null,
+          grades: [],
+          selectedGradeId: null,
+          sessions: [],
+          selectedSessionId: null,
+        };
+
+        function clearVideo() {
+          els.videoFrame.removeAttribute("src");
+          els.openVideoLink.setAttribute("href", "#");
+          els.playerSessionTitle.textContent = "Select a session";
+          els.playerLessonName.textContent =
+            "Choose a grade and lesson from the list.";
+          els.playerDetails.textContent = "";
+        }
+
+        function normalizeDriveForEmbed(rawUrl) {
+          let url;
+          try {
+            url = new URL(rawUrl, window.location.origin);
+          } catch {
+            return rawUrl;
+          }
+
+          if (url.hostname !== "drive.google.com") return url.toString();
+          const path = url.pathname || "";
+          const m = path.match(/\/file\/d\/([^/]+)\//i);
+          const fileIdFromPath = m ? m[1] : "";
+          const fileIdFromQuery = url.searchParams.get("id") || "";
+          const fileId = fileIdFromPath || fileIdFromQuery;
+          if (!fileId) return url.toString();
+          return `https://drive.google.com/file/d/${fileId}/preview`;
+        }
+
+        function setVideo(session) {
+          const rawUrl = session.videoUrl || "";
+          const embedUrl = normalizeDriveForEmbed(rawUrl);
+          els.openVideoLink.setAttribute("href", rawUrl || embedUrl || "#");
+
+          const parsed = parseUnitLesson(session.title);
+          const sessionTitle =
+            parsed.unit === 9999
+              ? session.title || "Session"
+              : `Unit ${parsed.unit}`;
+          const lessonName =
+            parsed.lesson === 9999
+              ? parsed.name || ""
+              : `Lesson ${parsed.lesson}: ${parsed.name}`;
+
+          els.playerSessionTitle.textContent = sessionTitle;
+          els.playerLessonName.textContent = lessonName || "Lesson";
+
+          const duration = session.duration ? String(session.duration) : "";
+          const uploadedAt = session.createdAt
+            ? new Date(session.createdAt).toLocaleString()
+            : "";
+          const parts = [];
+          if (duration) parts.push(`Duration: ${duration}`);
+          if (uploadedAt) parts.push(`Uploaded: ${uploadedAt}`);
+          els.playerDetails.textContent = parts.join(" • ");
+
+          els.videoFrame.src = embedUrl;
+        }
+
+        function isAllowedToUseRecorded() {
+          return (
+            state.user &&
+            (state.user.role === "administrator" ||
+              state.user.role === "recorded_student")
+          );
+        }
+
+        function isGradeClickable(gradeId) {
+          if (!isAllowedToUseRecorded()) return false;
+          if (state.user.role === "administrator") return true;
+          return state.user.gradeId === gradeId;
+        }
+
+        function renderGrades() {
+          els.gradesList.innerHTML = "";
+          state.grades.forEach((g) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className =
+              "recorded-grade-chip" +
+              (g.id === state.selectedGradeId ? " active" : "");
+            btn.textContent = g.name;
+            if (!isGradeClickable(g.id)) btn.classList.add("is-disabled");
+            btn.dataset.gradeId = String(g.id);
+            els.gradesList.appendChild(btn);
+          });
+        }
+
+        function parseUnitLesson(title) {
+          const raw = String(title || "");
+          const m = raw.match(/^U(\d+)-L(\d+):\s*(.+)$/i);
+          if (!m) {
+            return { unit: 9999, lesson: 9999, name: raw.trim() || raw };
+          }
+          return {
+            unit: Number(m[1]),
+            lesson: Number(m[2]),
+            name: String(m[3] || "").trim(),
+          };
+        }
+
+        function renderUnits() {
+          els.unitsList.innerHTML = "";
+          if (!state.sessions.length) {
+            const empty = document.createElement("div");
+            empty.className = "live-room-subtitle";
+            empty.textContent =
+              "No recorded sessions available for this grade.";
+            els.unitsList.appendChild(empty);
+            return;
+          }
+
+          const sorted = state.sessions
+            .map((s) => {
+              const parsed = parseUnitLesson(s.title);
+              return {
+                ...s,
+                unitNo: Number.isFinite(parsed.unit) ? parsed.unit : 9999,
+                lessonNo: Number.isFinite(parsed.lesson) ? parsed.lesson : 9999,
+                lessonName: parsed.name || s.title,
+              };
+            })
+            .sort((a, b) => {
+              if (a.unitNo !== b.unitNo) return a.unitNo - b.unitNo;
+              if (a.lessonNo !== b.lessonNo) return a.lessonNo - b.lessonNo;
+              return String(a.lessonName).localeCompare(String(b.lessonName));
+            });
+
+          const byUnit = new Map();
+          sorted.forEach((s) => {
+            const key = s.unitNo;
+            if (!byUnit.has(key)) byUnit.set(key, []);
+            byUnit.get(key).push(s);
+          });
+
+          const units = Array.from(byUnit.keys())
+            .sort((a, b) => a - b)
+            .map((unitNo) => ({ unitNo, sessions: byUnit.get(unitNo) }));
+          const firstUnitNo = units[0]?.unitNo ?? null;
+
+          units.forEach(({ unitNo, sessions }) => {
+            const details = document.createElement("details");
+            details.className = "recorded-unit-accordion";
+            details.dataset.unitNo = String(unitNo);
+
+            const containsSelected = sessions.some(
+              (s) => String(s.id) === String(state.selectedSessionId),
+            );
+            details.open =
+              containsSelected ||
+              (state.selectedSessionId === null && unitNo === firstUnitNo);
+
+            const summary = document.createElement("summary");
+            summary.className = "recorded-unit-summary";
+            summary.innerHTML =
+              `<div class="recorded-unit-summary-title"></div>` +
+              `<div class="recorded-unit-summary-meta"></div>`;
+            summary.querySelector(".recorded-unit-summary-title").textContent =
+              unitNo === 9999 ? "Other" : `Unit ${unitNo}`;
+            summary.querySelector(".recorded-unit-summary-meta").textContent =
+              `${sessions.length} lessons`;
+            details.appendChild(summary);
+
+            const list = document.createElement("div");
+            list.className = "recorded-unit-lessons";
+
+            sessions.forEach((s) => {
+              const item = document.createElement("button");
+              item.type = "button";
+              item.className =
+                "recorded-lesson-item" +
+                (String(s.id) === String(state.selectedSessionId)
+                  ? " active"
+                  : "");
+              item.dataset.sessionId = String(s.id);
+              item.dataset.videoUrl = s.videoUrl;
+
+              const duration = s.duration ? String(s.duration) : "";
+              item.innerHTML =
+                `<div class="recorded-lesson-left">` +
+                `<div class="recorded-lesson-title"></div>` +
+                `<div class="recorded-lesson-subtitle"></div>` +
+                `</div>` +
+                `<div class="recorded-lesson-right"></div>`;
+
+              item.querySelector(".recorded-lesson-title").textContent =
+                s.lessonNo === 9999
+                  ? s.lessonName
+                  : `Lesson ${s.lessonNo}: ${s.lessonName}`;
+              item.querySelector(".recorded-lesson-subtitle").textContent =
+                s.lessonNo === 9999 ? "Lesson" : `Lesson ${s.lessonNo}`;
+              item.querySelector(".recorded-lesson-right").textContent =
+                duration;
+
+              list.appendChild(item);
+            });
+
+            details.appendChild(list);
+            els.unitsList.appendChild(details);
+          });
+        }
+
+        async function loadGrades() {
+          const res = await window.MarvelsPlatform.apiFetch("/api/grades");
+          if (!res.ok) throw new Error("grades");
+          const data = await res.json();
+          state.grades = data.grades || [];
+        }
+
+        async function loadSessions(gradeId) {
+          const url =
+            state.user.role === "administrator"
+              ? `/api/recorded-sessions?grade_id=${encodeURIComponent(gradeId)}`
+              : "/api/recorded-sessions";
+          const res = await window.MarvelsPlatform.apiFetch(url);
+          if (!res.ok) throw new Error("sessions");
+          const data = await res.json();
+          state.sessions = data.sessions || [];
+        }
+
+        async function selectGrade(gradeId) {
+          if (!isGradeClickable(gradeId)) return;
+          state.selectedGradeId = gradeId;
+          state.selectedSessionId = null;
+          clearVideo();
+          renderGrades();
+          await loadSessions(gradeId);
+          renderUnits();
+
+          const first = state.sessions[0] || null;
+          if (first) {
+            state.selectedSessionId = first.id;
+            renderUnits();
+            setVideo(first);
+          }
+        }
+
+        els.gradesList.addEventListener("click", (e) => {
+          const btn = e.target.closest(".recorded-grade-chip");
+          if (!btn) return;
+          const gradeId = Number(btn.dataset.gradeId);
+          if (!Number.isFinite(gradeId)) return;
+          selectGrade(gradeId).catch(() => {});
+        });
+
+        els.unitsList.addEventListener("click", (e) => {
+          const btn = e.target.closest(".recorded-lesson-item");
+          if (!btn) return;
+          const url = btn.dataset.videoUrl || "";
+          if (!url) return;
+          try {
+            const parsed = new URL(url, window.location.origin);
+            if (parsed.protocol !== "http:" && parsed.protocol !== "https:")
+              return;
+          } catch {
+            return;
+          }
+          const session = state.sessions.find(
+            (s) => String(s.id) === String(btn.dataset.sessionId || ""),
+          );
+          if (!session) return;
+          state.selectedSessionId = session.id;
+          renderUnits();
+          setVideo(session);
+        });
+
+        window.addEventListener("auth:ready", async (e) => {
+          state.user = e.detail?.user || null;
+          clearVideo();
+
+          if (!state.user) {
+            els.recordedGradeHint.textContent =
+              "Login is required to view recorded sessions.";
+            return;
+          }
+
+          if (!isAllowedToUseRecorded()) {
+            els.recordedGradeHint.textContent =
+              "Your role can view the platform, but recorded sessions are disabled.";
+            return;
+          }
+
+          els.recordedGradeHint.textContent =
+            state.user.role === "administrator"
+              ? "Administrator access: all grades enabled."
+              : `Your assigned grade: ${state.user.gradeName || "Grade"}.`;
+
+          try {
+            await loadGrades();
+            renderGrades();
+            const initialGradeId =
+              state.user.role === "administrator"
+                ? state.grades[0]?.id || null
+                : state.user.gradeId || null;
+            if (initialGradeId) await selectGrade(initialGradeId);
+          } catch {
+            els.recordedGradeHint.textContent =
+              "Failed to load recorded sessions.";
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
